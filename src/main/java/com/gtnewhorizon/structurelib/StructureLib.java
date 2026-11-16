@@ -22,6 +22,7 @@ import com.gtnewhorizon.structurelib.command.CommandConfigureChannels;
 import com.gtnewhorizon.structurelib.command.CommandRegistryDebug;
 import com.gtnewhorizon.structurelib.item.ItemBlockHint;
 import com.gtnewhorizon.structurelib.item.ItemConstructableTrigger;
+import com.gtnewhorizon.structurelib.item.ItemDebugConstructableTrigger;
 import com.gtnewhorizon.structurelib.item.ItemFrontRotationTool;
 import com.gtnewhorizon.structurelib.net.AlignmentMessage;
 import com.gtnewhorizon.structurelib.net.ErrorHintParticleMessage;
@@ -33,6 +34,7 @@ import com.gtnewhorizon.structurelib.util.XSTR;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -98,6 +100,7 @@ public class StructureLib {
     static Item itemBlockHint;
     static Item itemFrontRotationTool;
     static Item itemConstructableTrigger;
+    static Item itemDebugConstructableTrigger;
     public static final CreativeTabs creativeTab = new CreativeTabs("structurelib") {
 
         @Override
@@ -118,6 +121,9 @@ public class StructureLib {
         GameRegistry.registerItem(
                 itemConstructableTrigger = new ItemConstructableTrigger(),
                 itemConstructableTrigger.getUnlocalizedName());
+        GameRegistry.registerItem(
+                itemDebugConstructableTrigger = new ItemDebugConstructableTrigger(),
+                itemDebugConstructableTrigger.getUnlocalizedName());
         proxy.preInit(e);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance(), new GuiHandler());
 
@@ -126,6 +132,11 @@ public class StructureLib {
         ChannelDescription.set(CHANNEL_SHOW_ERROR, MOD_ID, "channels.structurelib.show_errors");
 
         DevelopHelper.onPreInit();
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent e) {
+        proxy.init(e);
     }
 
     @Mod.EventHandler
